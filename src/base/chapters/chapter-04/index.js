@@ -1,8 +1,12 @@
 import {Observable, of, range, generate} from "rxjs";
 import {map, filter, repeat} from "rxjs/operators";
-import log from "../../../util/"
+import log from "../../../util/";
+import testETN from "./empty-never-throw-test";
+import testAsync from "./interval-and-timer";
 export default function startTest(){
-    log(`startTest(c4) :: enter.`)
+    log(`startTest(c4) :: enter.`);
+    testETN();
+    testAsync();
     
 }
 /**
