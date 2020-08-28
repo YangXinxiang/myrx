@@ -1,0 +1,23 @@
+{
+  "name": "myrx",
+  "version": "1.0.0",
+  "description": "xxx",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx webpack --config config/webpack.config.js",
+    "serve": "webpack-dev-server  --config config/webpack.config.js"
+  },
+  "author": "xinxiang",
+  "license": "ISC",
+  "devDependencies": {
+    "clean-webpack-plugin": "^3.0.0",
+    "html-webpack-plugin": "^3.2.0",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.9.0"
+  },
+  "dependencies": {
+    "rxjs": "^6.5.3"
+  }
+}
