@@ -3,11 +3,16 @@ import {map, filter, repeat} from "rxjs/operators";
 import log from "../../../util/";
 import testETN from "./empty-never-throw-test";
 import testAsync from "./interval-and-timer";
+import testFrom from "./from-test";
+import testFromEvent from "./fromEvent-test";
 export default function startTest(){
     log(`startTest(c4) :: enter.`);
-    testETN();
-    testAsync();
-    
+    // testETN();
+    // testAsync();
+
+    // testFrom();
+
+    testFromEvent();
 }
 /**
  * 练习操作符 of
