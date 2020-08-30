@@ -7,6 +7,7 @@ import testFrom from "./from-test";
 import testFromEvent from "./fromEvent-test";
 import testAjax from "./ajax-test";
 import testRepeatWhen, {testRepeat3, testRepeat5, testRepeatWhen2} from "./repeatWhen-test";
+import testDefer from "./defer-test";
 export default function startTest(){
     log(`startTest(c4) :: enter.`);
     // testETN();
@@ -17,9 +18,11 @@ export default function startTest(){
    //  testFromEvent();
    // testAjax(); // ajax没有测试成功，是不支持了么？
    // testRepeatWhen();
-   testRepeatWhen2();
+   // testRepeatWhen2();
    // testRepeat3();
    //testRepeat5();
+
+   testDefer();
 }
 /**
  * 练习操作符 of
