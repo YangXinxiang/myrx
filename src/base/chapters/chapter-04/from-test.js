@@ -3,9 +3,9 @@ import {map, filter, repeat} from "rxjs/operators";
 import log from "../../../util/"
 export default function testFrom(){
     log(`testFrom :: enter.`);
-    fromArray();
-    fromString();
-    fromArguments("name","email","phone");
+    // fromArray();
+    // fromString();
+    // fromArguments("name","email","phone");
     fromPromiseCur();
 }
 
@@ -38,8 +38,11 @@ function fromPromiseCur(){
     }));
     let promise2 = Promise.resolve("promise fullfilled 222~~~");
     let source$2 = from(promise2);
-    //subscribe(source$, "fromPromise");
-    subscribe(source$2, "fromPromiseCur");
+    // source$2.subscribe(
+    //     value => log(`fromPromiseCur :: value = ${value}`)
+    // )
+    subscribe(source$, "fromPromise");
+   // subscribe(source$2, "fromPromiseCur");
 }
 
 
@@ -51,5 +54,5 @@ function subscribe(source$, from){
         error => log(`subscribe :: [from = ${from}] in error, error = ${error}`),
         () =>    log(`subscribe :: [from = ${from}] in complete~~~`),
     )
-    subscribtion.unsubscribe();
+    //subscribtion.unsubscribe();
 }
