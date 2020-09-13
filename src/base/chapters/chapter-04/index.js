@@ -8,12 +8,13 @@ import testFromEvent from "./fromEvent-test";
 import testAjax from "./ajax-test";
 import testRepeatWhen, {testRepeat3, testRepeat5, testRepeatWhen2} from "./repeatWhen-test";
 import testDefer from "./defer-test";
+import testError from "./error-test";
 export default function startTest(){
     log(`startTest(c4) :: enter.`);
     // testETN();
     // testAsync();
 
-    // testFrom();
+     testFrom();
 
    //  testFromEvent();
    // testAjax(); // ajax没有测试成功，是不支持了么？
@@ -22,7 +23,8 @@ export default function startTest(){
    // testRepeat3();
    //testRepeat5();
 
-   testDefer();
+   // testDefer();
+   //testError();
 }
 /**
  * 练习操作符 of
