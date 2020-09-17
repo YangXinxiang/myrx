@@ -18,7 +18,8 @@ function startTest(){
     testRepeat();
     */
     // startTest4(); //第4章已练习完
-    startTestC5(); // 2020.09.13 第5章已经完整的练习完毕。
+    // startTestC5(); // 2020.09.13 第5章已经完整的练习完毕。
+    startTestC6(); // 第6章练习
     
 }
 

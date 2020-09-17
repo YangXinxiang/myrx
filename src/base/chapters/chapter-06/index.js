@@ -4,9 +4,11 @@
  */
 import log from "../../../util/";
 import testMathAssist from "./math-assist-test";
+import testBooleanAssist from "./boolean-assist-test"
 export default function startTestC6(){
     log(`startTestC6 :: enter.`);
-    testMathAssist();
+    // testMathAssist();
+    testBooleanAssist();
 }
 
 
