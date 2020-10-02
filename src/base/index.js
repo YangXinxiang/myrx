@@ -1,6 +1,7 @@
 import startTest4, {testOf, testRange, testGenerate, testGenerate2, testRepeat, testRepeat2} from "./chapters/chapter-04";
 import startTestC5 from "./chapters/chapter-05";
 import startTestC6 from "./chapters/chapter-06";
+import startTestC7 from "./chapters/chapter-07";
 import log from "../util/index";
 function startTest(){
     log(`startTest :: enter.`); 
@@ -19,7 +20,9 @@ function startTest(){
     */
     // startTest4(); //第4章已练习完
     // startTestC5(); // 2020.09.13 第5章已经完整的练习完毕。
-    startTestC6(); // 第6章练习
+    // startTestC6(); // 第6章练习
+
+    startTestC7(); // 第7章练习
     
 }
 
