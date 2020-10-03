@@ -9,22 +9,27 @@ import testAjax from "./ajax-test";
 import testRepeatWhen, {testRepeat3, testRepeat5, testRepeatWhen2} from "./repeatWhen-test";
 import testDefer from "./defer-test";
 import testError from "./error-test";
+import exercise4 from "./exercise-20200920";
+import repeatWhen3 from "./repeatWhen-test3";
 export default function startTest(){
     log(`startTest(c4) :: enter.`);
     // testETN();
     // testAsync();
 
-     testFrom();
+     //testFrom();
 
    //  testFromEvent();
    // testAjax(); // ajax没有测试成功，是不支持了么？
-   // testRepeatWhen();
-   // testRepeatWhen2();
+    // testRepeatWhen();
+  // testRepeatWhen2();
    // testRepeat3();
    //testRepeat5();
 
    // testDefer();
    //testError();
+
+   // exercise4();
+   repeatWhen3();
 }
 /**
  * 练习操作符 of

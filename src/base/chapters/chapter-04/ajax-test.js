@@ -1,7 +1,7 @@
 /**
  * 测试没有成功，呃呃，不支持了么？
  */
-import {ajax, fromEvent,Observable} from "rxjs";
+import {ajax, fromEvent,Observable,} from "rxjs";
 import log from "../../../util/"
 export default function tesAjax(){
     log(`tesAjax :: enter.`);
