@@ -25,7 +25,7 @@ function startTest(){
 
     // startTestC7(); // 第7章练习 , 2020.10.02 第7章，过滤类操作符已完全练习完。
 
-    startTestC8();
+     startTestC8();
     
 }
 

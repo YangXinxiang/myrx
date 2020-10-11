@@ -5,6 +5,7 @@
  */
 import {fromEvent, merge} from "rxjs";
 import {concatMap, takeUntil, map} from "rxjs/operators";
+
 import log from "../../../util";
 export default function testConcatMap(){
     log(`testConcatMap :: enter.`);

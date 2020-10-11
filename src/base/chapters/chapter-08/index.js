@@ -11,6 +11,8 @@ import testWindowAndBuffer from "./window-buffer-test";
 import testConcatMap from "./concatMap-test";
 import testDragWithRxjs from "./drag-box-test";
 import testDragBox2 from "./drag-box2-test";
+import testDragBox3 from "./drag-box-test3";
+import testHo from "./high-order-observable-test";
 export default function startTestC8() {
     log(`startTestC8 :: enter.`);
     // testMapAndMapTo();
@@ -22,5 +24,7 @@ export default function startTestC8() {
      // testConcatMap();
      // testDragWithRxjs();
 
-    testDragBox2();
+    // testDragBox2();
+    //testHo();
+    testDragBox3();
 }

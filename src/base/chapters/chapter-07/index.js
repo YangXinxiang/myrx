@@ -18,5 +18,4 @@ export default function startTestC7() {
     // testSkip();
     // testThrottleAndDebounce(); // 已经练完、测完
     testDistinct();
-
 }
