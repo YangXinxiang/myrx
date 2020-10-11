@@ -19,7 +19,7 @@ export default function startTest(){
      //testFrom();
 
    //  testFromEvent();
-   // testAjax(); // ajax没有测试成功，是不支持了么？
+    testAjax(); // ajax没有测试成功，是不支持了么？
     // testRepeatWhen();
   // testRepeatWhen2();
    // testRepeat3();
@@ -29,7 +29,7 @@ export default function startTest(){
    //testError();
 
    // exercise4();
-   repeatWhen3();
+   // repeatWhen3();
 }
 /**
  * 练习操作符 of
