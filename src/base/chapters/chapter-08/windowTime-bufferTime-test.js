@@ -5,10 +5,10 @@ import log from "../../../util";
 export default function testWindowAndBufferTime(){
     log(`testWindowAndBufferTime :: enter.`);
     // testWindowTime();
-    // testWindowTime2();
-    // testBufferTime();
+     testWindowTime2();
+    //testBufferTime();
 
-    testBufferTime2();
+    // testBufferTime2();
 }
 
 /**
@@ -22,8 +22,10 @@ function testWindowTime(){
     log(`testWindowTime :: enter.`);
     const source$ = interval(200)
     const newData$ = source$.pipe(
+        
         windowTime(1000),
-        take(6)
+        take(6),
+        
     )
 
     const oberver = {
@@ -51,14 +53,17 @@ function testWindowTime(){
             log(`testWindowTime (outer) :: in complete`);
         }
     )
+
+    
+
 }
 
 // 使用windowTime的第二个参数，表示下一个包装上游数据的observable对象什么时候产生
 function testWindowTime2(){
     log(`testWindowTime2 :: enter.`);
-    const source$ = interval(200)
+    const source$ = timer(0,100)
     const newData$ = source$.pipe(
-        windowTime(1000, 500), // 第二个参数表示每隔多长时间产生一个封装上游数据的observable， 500ms比1000短，会成倍的产生ob，可能会产生重复数据
+        windowTime(400, 700), // 第二个参数表示每隔多长时间产生一个封装上游数据的observable， 500ms比1000短，会成倍的产生ob，可能会产生重复数据
         take(6)
     )
 
