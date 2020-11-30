@@ -7,7 +7,8 @@ import {map, take, concatMap} from "rxjs/operators";
 import log from "../../../util";
 export default function testHo(){
     log(`testHo :: enter`);
-    testHo1();
+   // testHo1();
+    testHO2();
 }
 
 /**
@@ -47,5 +48,32 @@ function testHo1(){
         },
         error => log(`testHo1 :: (outer) , in error, error = ${JSON.stringify(error)}`),
         ()=>log(`testHo1 :: (outer) , in complete~~~`)
+    )
+}
+
+function testHO2(){
+    log(`testHO2 :: enter.`);
+    const project = (value, index)=>{
+        log(`testHO2 :: project enter.`);
+        return interval(200).pipe(take(5));
+    }
+
+    const source$ = interval(80).pipe(take(3));
+    const newData$ = source$.pipe(map(project));
+    newData$.subscribe(
+        (value)=>{
+            log(`testHO2 :: in next, value = ${value}`);
+            value.subscribe(
+                (vv)=>{
+                    log(`testHO2 :: in next [inner], vv = ${vv}`);
+                }
+            )
+        },
+        (error)=>{
+            log(`testHO2 :: error`);
+        },
+        ()=> {
+            log(`testHO2 :: complete~~~`);
+        }
     )
 }
