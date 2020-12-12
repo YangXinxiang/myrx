@@ -1,7 +1,8 @@
 import log from "../../../util/index";
 import testSubject from "./test-subject-01";
-// import Subject from "rxjs/Subject";
+import testMulticast from "./multicast-test";
 export default function startTestC9() {
-    log(`startTestC9 :: enter.`);
-    testSubject();
+    log(`startTestC10 :: enter.`);
+    // testSubject();
+    testMulticast();
 }

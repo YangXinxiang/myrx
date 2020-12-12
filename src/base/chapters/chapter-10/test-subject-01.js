@@ -1,13 +1,14 @@
 import log from "../../../util/index";
-import {Subject, interval, merge} from "rxjs";
+import {Subject, interval, merge, fromEvent} from "rxjs";
 import { take} from "rxjs/operators";
 export default function testSubject22() {
     log(`testSubject22 :: enter.`);
     //testSubject1();
     // testSubject2();
     // testColdAndHot();
-    // testColdAndHot2();
-    testSubject2255();
+    testColdAndHot2();
+    // testSubject2255();
+    // testMultiSubscribeToObservable();
 }
 
 
@@ -92,26 +93,30 @@ function testColdAndHot2(){
     );
     // Subject因为不能重复使用，因此
     // 在complete之后，之前subscribe、以及之后subscribe的内容都不会再收到数据。
-    // complete之后再来数据，所有subscribe的地方会收到一个完结消息。
-    // complete之后再来异常，所有subscribe的地方会收到一个异常消息。
+    // complete之后再来数据，所有subscribe的地方会收到一个完结消息；complete之后再添加的observer，会立即收到一个完结的消息。
+    // complete之后再来异常，所有subscribe的地方会收到一个异常消息；complete之后再添加的observer，会立即收到一个异常的消息。
     subject.complete();
     log(`testColdAndHot :: called subject.complete.`);
     let sub2;
     let sub3;
     setTimeout(()=>{
-            sub2 = subject.subscribe(
-                value => log(`testColdAndHot2 :: [2] in next, value = ${value}`),
-                error => log(`testColdAndHot2 :: [2] in error, error = ${error}`),
-                ()=>log(`testColdAndHot2 :: [2] in complete`),
-            ); 
+        log(`testColdAndHot :: in setTimeout [1600], will add no.2 observer`);
+        // complete之后再添加的observer，会立即收到一个完结的消息。
+        sub2 = subject.subscribe(
+            value => log(`testColdAndHot2 :: [2] in next, value = ${value}`),
+            error => log(`testColdAndHot2 :: [2] in error, error = ${error}`),
+            ()=>log(`testColdAndHot2 :: [2] in complete`),
+        ); 
     },1600)
-    setTimeout(()=>{      
+    setTimeout(()=>{   
+        log(`testColdAndHot :: in setTimeout [6000], will add no.3 observer`);   
+        // complete之后再添加的observer，会立即收到一个完结的消息。
         sub3 = subject.subscribe(
             value => log(`testColdAndHot2 :: [3] in next, value = ${value}`),
             error => log(`testColdAndHot2 :: [3] in error, error = ${error}`),
             ()=>log(`testColdAndHot2 :: [3] in complete`),
         ); 
-    },2000);
+    },6000);
     
 }
 // 测试subject，可以注册多个上游
@@ -136,7 +141,27 @@ function testSubject2255(){
     
 }
 
-// 对此测试一下普通 的hot observable
+// 对此测试一下普通 的hot observable 的多个注册
 function testMultiSubscribeToObservable(){
+    log(`testMultiSubscribeToObservable :: enter.`);
+    const source$ = fromEvent(document.querySelector("#myBtn77"), "click");
     
+
+    source$.subscribe(
+        value => log(`testMultiSubscribeToObservable :: [1] in next, value = AA:: ${value}`),
+        error => log(`testMultiSubscribeToObservable :: [1] in error, error = AA:: ${error}`),
+        () => log(`testMultiSubscribeToObservable :: [1] in complete~~`),
+    );
+    
+    source$.subscribe(
+        value => log(`testMultiSubscribeToObservable :: [2] in next, value = BB:: ${value}`),
+        error => log(`testMultiSubscribeToObservable :: [2] in error, error = BB:: ${error}`),
+        () => log(`testMultiSubscribeToObservable :: [2] in complete~~`),
+    )
+    source$.subscribe(
+        value => log(`testMultiSubscribeToObservable :: [3] in next, value = BB:: ${value}`),
+        error => log(`testMultiSubscribeToObservable :: [3] in error, error = BB:: ${error}`),
+        () => log(`testMultiSubscribeToObservable :: [3] in complete~~`),
+    )
+    log(`testMultiSubscribeToObservable :: end.`);
 }
