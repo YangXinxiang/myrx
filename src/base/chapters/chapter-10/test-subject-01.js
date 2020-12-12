@@ -6,9 +6,10 @@ export default function testSubject22() {
     //testSubject1();
     // testSubject2();
     // testColdAndHot();
-    testColdAndHot2();
+    // testColdAndHot2();
     // testSubject2255();
     // testMultiSubscribeToObservable();
+    testSubjectHot1();
 }
 
 
@@ -164,4 +165,29 @@ function testMultiSubscribeToObservable(){
         () => log(`testMultiSubscribeToObservable :: [3] in complete~~`),
     )
     log(`testMultiSubscribeToObservable :: end.`);
+}
+
+// 再练习通过subject 实现热播
+function testSubjectHot1(){
+    log(`testSubjectHot1 :: enter.`);
+    const coldSource$ = interval(1000).pipe(take(3));
+    const subject = new Subject();
+    coldSource$.subscribe(subject);
+    const subscribtion = subject.subscribe(
+        value => log(`testSubjectHot1 :: observer[1], in next , value = ${value}`),
+        error => log(`testSubjectHot1 :: observer[1], in error , error = ${error}`),
+        () => log(`testSubjectHot1 :: observer[1], in complete~~`),
+    );
+
+    setTimeout(()=> {
+        subject.subscribe(
+            value => log(`testSubjectHot1 :: observer[2], in next , value = ${value}`),
+            error => log(`testSubjectHot1 :: observer[2], in error , error = ${error}`),
+            () => log(`testSubjectHot1 :: observer[2], in complete~~`),
+        );
+    },1500);
+
+    setTimeout(()=> {
+        subscribtion.unsubscribe();
+    },2000);
 }

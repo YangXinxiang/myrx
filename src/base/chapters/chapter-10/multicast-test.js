@@ -4,7 +4,8 @@ import { take, multicast,map, refCount} from "rxjs/operators";
 export default function testMulticast(){
     log(`testMulticast :: enter.`);
     // testMulticast1();
-    testMulticastWithRefCount1();
+    testMulticast2();
+    //testMulticastWithRefCount1();
 }
 /**
  * 测试使用multicast产生热播数据流，该方法测试使用connect。
@@ -56,6 +57,46 @@ function testMulticast1(){
     },6000);
     //吐出数据的时间点 2.5s : 0   3.5s  :1,     4.5s:2      5.5s: 3  complete
 }
+
+/**
+ * 再练习一遍 multicast， 使用 connect
+ */
+function testMulticast2(){
+    log(`testMulticast2 :: enter.`);
+     const coldSource$ = interval(1000).pipe(take(3));
+     // multicast 在传入一个参数的时候，返回的是一个ConnectableObservable实例
+     const hot$ = coldSource$.pipe(
+         multicast(new Subject()),
+         refCount()
+     );
+
+     const subscribtion = hot$.subscribe(
+         value => log(`testMulticast2 :: observer[1], in next ,vaule = ${value}`),
+         error => log(`testMulticast2 :: observer[1], in error ,error = ${error}`),
+         ()=>log(`testMulticast2 :: observer[1], in complete~~`)
+     )
+
+     setTimeout(()=>{
+        subscribtion.unsubscribe(); // 取消注册之后，hot$就没有observer了，会取消对上游的订阅，但是注意哈，此时multicast使用的subject还是处于可用状态的。
+        return;
+        hot$.subscribe(
+            value => log(`testMulticast2 :: observer[2], in next ,vaule = ${value}`),
+            error => log(`testMulticast2 :: observer[2], in error ,error = ${error}`),
+            ()=>log(`testMulticast2 :: observer[2], in complete~~`)
+        )
+     },1500)
+
+     setTimeout(()=>{
+        // 再给热播数据添加observer，此时中间人会重新订阅上游数据，数据会从头开始。
+        hot$.subscribe(
+            value => log(`testMulticast2 :: observer[3], in next ,vaule = ${value}`),
+            error => log(`testMulticast2 :: observer[3], in error ,error = ${error}`),
+            ()=>log(`testMulticast2 :: observer[3], in complete~~`)
+        )
+     },2000);
+     //hot$.connect();
+}
+
 /**
  * 练习使用multicast，使用refCount操作符自动注册上游数据。
  */
@@ -78,7 +119,7 @@ function testMulticastWithRefCount1(){
         // 因为multicast会去检查它产生的 connectableObservable是否已经完蛋，如果已经完蛋，重新调用工厂方法要一个subject，重新注册上游获取数据.
         // 但是，但是当时间有重合，哈哈，就不一样啦，数据源就是同一份。。
         multicast(subjectFactory), 
-        refCount()
+        
     );
     setTimeout(()=>{
         log(`testMulticastWithRefCount1 :: in setTimeout [1500]`);
