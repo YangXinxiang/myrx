@@ -8,10 +8,8 @@ describe('index', () => {
       // expect(sum()).toEqual(0)
       // 步骤1，准备测试的环境
       const source$ = range(1,6);
-
       // 步骤2，执行被测试的函数
       const result$ = source$.pipe(sum2);
-
       // 步骤3，验证结果
       result$.subscribe(
         value=>{
@@ -27,7 +25,7 @@ describe('index', () => {
         }
       )
     });
-
+    
     it("测试字符串相加的结果", (done)=>{
       // 步骤1，准备数据
       const source$ = of("1", "2", "3");
@@ -52,7 +50,7 @@ describe('index', () => {
     });  
 
 
-    it("测试异步结果，测试设置超时时间", (done)=>{
+    it("测试异步结果，测试设置超时时间， 7秒", (done)=>{
       // 步骤1，准备数据
       // const source$ = of("1", "2", "3");
       const source$ = timer(1000); // 7秒后才返回数据，但是框架在5秒没返回就会认为失败。
@@ -85,6 +83,7 @@ describe('index', () => {
     it("测试interval返回多个数据的加和数据", (done)=>{
       // 1, 准备数据
       const source$ = interval(500).pipe(take(4));
+
       // 2，执行函数
       // const result$ = source$.pipe(sum2);
       const rstArr = [];
@@ -94,6 +93,7 @@ describe('index', () => {
         error => console.log(`sum3 test3,  in error, err = ${JSON.stringify(error)}`),
         ()=>{
           console.log(`sum3 test3, in complete~~rstArr = ${JSON.stringify(rstArr)}`);
+          // console.log(rstArr===[0,1,2,3]);
           expect(rstArr).toEqual([0,1,2,3]);
           done();
         }
