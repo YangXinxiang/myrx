@@ -1,5 +1,5 @@
-import {range, of, timer, interval} from "rxjs";
-import {take, map} from "rxjs/operators";
+import {range, of, timer, interval,empty, throwError} from "rxjs";
+import {take, map, } from "rxjs/operators";
 import {TestScheduler} from "rxjs/testing";
 
 let scheduler;
@@ -15,6 +15,7 @@ describe("测试RxJs异步", ()=>{
             // return actual === expected; // 这样自己手工比较是没有用的。
         });
     })
+
     it("弹珠图测试1", ()=>{
         const source = "--a--b--|";
         const expected = "--a--b--|";
@@ -40,6 +41,19 @@ describe("测试RxJs异步", ()=>{
         const time = scheduler.createTime(source);
         console.log(`测试一个时间, time = ${time}`);
         expect(time).toEqual(50); // 执行真正的断言判断
+    })
+
+    it("测试empty", ()=>{
+        const expected = "|";
+        scheduler.expectObservable(empty()).toBe(expected);
+        scheduler.flush();
+    })
+
+    it("测试抛出错误", ()=>{
+        const expected = "#";
+        const source$ = throwError("error"); // 这个参数error貌似只能是error啊
+        scheduler.expectObservable(source$).toBe(expected);
+        scheduler.flush();
     })
 })
 
