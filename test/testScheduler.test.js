@@ -2,14 +2,14 @@ import {range, of, timer, interval,empty, throwError, never,merge, concat} from 
 import {take, map, } from "rxjs/operators";
 import {TestScheduler} from "rxjs/testing";
 
-let scheduler;
-let current;
+
 
 describe("测试RxJs异步", ()=>{
+    let scheduler;
     beforeEach(()=>{
         // 构造函数的参数中执行真正的断言，不是自己去比较actual和expected， 而是用断言工具去比较
         scheduler = new TestScheduler((actual, expected) => {
-            console.log(`new TestScheduler :: enter, actual = ${JSON.stringify(actual)}, expected = ${JSON.stringify(expected)}`);
+            console.log(`new TestScheduler [11]:: enter, actual = ${JSON.stringify(actual)}, expected = ${JSON.stringify(expected)}`);
             expect(actual).toEqual(expected); // 执行真正的断言判断
             // expect(11).toEqual(1); // 必然失败
             // return actual === expected; // 这样自己手工比较是没有用的。
@@ -103,5 +103,71 @@ describe("测试RxJs异步", ()=>{
         scheduler.expectObservable(concated$).toBe(expected);
         scheduler.flush(); // 必须要有flush啊
     })
+
+    it("测试hot observable", ()=>{
+        const source1 =     "--a----^b-----c---|";
+        const source2 =     "-------^d-----e---|";
+        const expected =           "-(bd)--(ce)|";
+        const expected1 =           "-b-----c---|";
+        const hotSource1$ = scheduler.createHotObservable(source1);
+        const hotSource2$ = scheduler.createHotObservable(source2);
+        const merged$ = merge(hotSource1$, hotSource2$);
+        scheduler.expectObservable(merged$).toBe(expected);
+        scheduler.expectObservable(hotSource1$).toBe(expected1);
+        scheduler.flush();
+    })
+
+
+    it("测试hot observable 和cold observable结合", ()=>{
+        const source1 = "--a----^c------d---|";
+        const source2 =        "-e---f------g|";
+        const expected =       "-(ce)f--d---g|";
+        const source1$ = scheduler.createHotObservable(source1);
+        const source2$ = scheduler.createColdObservable(source2);
+        const merged$ = merge(source1$, source2$);
+        scheduler.expectObservable(merged$).toBe(expected);
+        scheduler.flush();
+    })
 })
+
+describe("测试subscribe和unsubscribe等用例", ()=>{
+    let scheduler;
+    beforeEach(()=>{
+        scheduler = new TestScheduler((actual, expected)=>{
+            console.log(`new TestScheduler [22]:: enter, actual = ${JSON.stringify(actual)}, expected = ${JSON.stringify(expected)}`);
+            expect(actual).toEqual(expected);
+        })
+    })
+
+    it("测试注册subscribe和反注册unsubscribe", ()=>{
+        const source1 =     "--a---b---|";
+        const source2 =               "---c-d-----|";
+        // ^可以出现在创建【热播】的source源字符串中，也可以出现在判断冷播的subscriptions中。
+        // 但是，^不可以出现在创建【冷播】的source源字符中。
+        const source1Sub =  "^---------!"; 
+        const source2Sub = "";
+        const expected=     "--a---b------c-d-----|"; // 重点检查时机
+        const source1$ = scheduler.createColdObservable(source1);
+        const source2$ = scheduler.createColdObservable(source2);
+        const concated$ = concat(source1$,source2$);
+        scheduler.expectObservable(concated$).toBe(expected);
+        scheduler.expectSubscriptions(source1$.subscriptions).toBe(source1Sub);
+
+        //scheduler.expectSubscriptions(src1$.subscriptions).toBe(expectedSub1);
+        //
+        //
+        scheduler.flush();
+    })
+
+    it("测试热播的subdcribe 和 unsubscribe", ()=>{
+        const source1 = "---a---^b----c-----d---|";
+        const expected =       "-b----c-----d---|";
+        const expectedSub1 =   "^---------------!";
+        const source1$ = scheduler.createHotObservable(source1);
+        scheduler.expectObservable(source1$).toBe(expected);
+        scheduler.expectSubscriptions(source1$.subscriptions).toBe(expectedSub1);
+        scheduler.flush();
+    })
+})
+
 
