@@ -3,8 +3,8 @@
  */
 import {merge, timer, interval} from "rxjs";
 import {map, take} from "rxjs/operators";
-import { testCase } from "../test-Helpers/test-helper";
-import {hot, cold, time, expectObservable, expectSubscriptions } from "../test-Helpers/marble-testing";
+import { testCase } from "../testHelpers/test-helper";
+import {hot, cold, time, expectObservable, expectSubscriptions } from "../testHelpers/marble-testing";
 describe("使用封装的helper、marble等来进行单元测试，简化单元测试的书写", ()=>{
 
     testCase("测试使用封装的cold", ()=>{
