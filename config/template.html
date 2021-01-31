@@ -12,6 +12,22 @@
             border: 1px solid red;
             position: absolute;
         }
+
+        .chapter12 {
+            width: 800px;
+            height: 400px;
+            border: 1px solid blue;
+        }
+        .chapter12 .chapter12_counter{
+            width: 300px;
+            height: 400px;
+            border: 1px solid rebeccapurple;
+            float: left;
+            margin-right: 20px;
+        }
+        .chapter12 .searchArea{
+            border: 1px solid green;
+        }
     </style>
 </head>
 <body>
@@ -21,13 +37,37 @@
         <input type="button" value="再点啊~~" id="myBtn2"/>
         <input type="button" value="继续啊点啊~~" id="myBtn3"/>
         <br />
-        <textarea name="" id="myTextArea" cols="30" rows="10"></textarea>
+        <textarea name="" id="myTextArea" cols="30" rows="5"></textarea>
         <br />
         <input type="button" value="点我啊" id="myBtn66"/>
         <br />
-        <textarea name="" id="myTextArea2" cols="30" rows="10"></textarea>
+        <textarea name="" id="myTextArea2" cols="30" rows="5"></textarea>
         <br>
         <div id= "dragbox"></div>
+        <br>
+        <input type="button" value="点我试试注册多个" id="myBtn77"/>
+        <br>
+        <input type="button" value="点我啊发请求哈" id="myAjaxBtn"/>
+        <br />
+        <textarea name="" id="responseShow" cols="30" rows="5"></textarea>
+        <br>
+        <div id="chapter12" class="chapter12">
+            <div class="chapter12_counter">
+                <input type="button" value="加" id="plus" style="margin-right: 20px;"/>
+                <input type="button" value="减" id="minus"/>
+                <br />
+                <textarea name="" id="plusResult" cols="30" rows="5"></textarea>
+            </div>
+            <div class="chapter12_counter">
+                <div class="searchArea">
+                    <label for="searchGit">搜索Git代码仓库: </label>
+                    <input type="text" id="searchGit" placeholder="请输入内容">
+                </div>
+                <span>搜索结果： </span>
+                <textarea name="" id="searchResult" cols="55" rows="10"></textarea>
+            </div>
+        </div>
+        
     </div>
 </body>
 </html>
