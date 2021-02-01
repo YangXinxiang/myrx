@@ -1,5 +1,5 @@
 import {range, of, timer, interval,empty, throwError, never,merge, concat} from "rxjs";
-import {take, map, } from "rxjs/operators";
+import {take, map, tap} from "rxjs/operators";
 import {TestScheduler} from "rxjs/testing";
 
 
@@ -17,7 +17,7 @@ describe("测试RxJs异步", ()=>{
     })
 
     it("弹珠图测试1", ()=>{
-        const source = "--a--b--|";
+        const source =   "--a--b--|";
         const expected = "--a--b--|";
         const source$ = scheduler.createColdObservable(source);
         scheduler.expectObservable(source$).toBe(expected);
@@ -26,12 +26,15 @@ describe("测试RxJs异步", ()=>{
     })
 
     it("测试一个map", ()=>{
-        const source = "--a--b--|";
+        // const source = "--a--b--|";
+        const source =   "--2--5--|";
         const expected = "--a--b--|";
-        const source$ = scheduler.createColdObservable(source, {a:2,b:5}); // 第2个参数传入真正的数据
+        const source$ = scheduler.createColdObservable(source); // 第2个参数传入真正的数据
         // 测试操作符
         scheduler.expectObservable(source$.pipe(
-            map(x=>x*2)
+            tap(x=>console.log(`test1~~~~~~~~~~~~~~x= ${x}, typeof = ${typeof x}`)),
+            map(x=>x*2),
+            tap(x=>console.log(`test2~~~~~~~~~~~~~~x= ${x}, typeof = ${typeof x}`)),
         )).toBe(expected, {a:4,b:10}); // toBe的第2个参数传入期待的结果
         scheduler.flush(); // 准备去真正的断言。
     })
@@ -82,9 +85,9 @@ describe("测试RxJs异步", ()=>{
     })
 
     it("测试merge", ()=>{
-        const source1 =     "-i----b---|";
-        const source2 =     "-w----d---|";
-        const expected =    "-(iw)-(bd)|";
+        const source1 =     "-i--------b---|";
+        const source2 =     "-w--------d---|";
+        const expected =    "-(iw)-----(bd)|";
         const source1$ = scheduler.createColdObservable(source1);
         const source2$ = scheduler.createColdObservable(source2);
         const merged$ = merge(source1$, source2$);
@@ -108,7 +111,7 @@ describe("测试RxJs异步", ()=>{
         const source1 =     "--a----^b-----c---|";
         const source2 =     "-------^d-----e---|";
         const expected =           "-(bd)--(ce)|";
-        const expected1 =           "-b-----c---|";
+        const expected1 =          "-b-----c---|";
         const hotSource1$ = scheduler.createHotObservable(source1);
         const hotSource2$ = scheduler.createHotObservable(source2);
         const merged$ = merge(hotSource1$, hotSource2$);
