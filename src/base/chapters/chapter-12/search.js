@@ -32,6 +32,23 @@ function fetch(query){
 }
 
 /**
+ * 数据处理核心管道方法，将keyup$事件流映射处理成ajax数据流，供下游订阅。
+ * @param {Observable} keyup$ 
+ * @param {int} duration 
+ * @param {Scheduler} scheduler 
+ */
+function createSearchPipe(keyup$, fetch, duration, scheduler){
+    return keyup$.pipe(
+        // duration时段内喜新厌旧，duration结束的时候才吐出数据
+        // duration不结束上游就来数据，会重启计算一段新的duration节流期，丢弃旧的数据。
+        debounceTime(duration, scheduler),  
+        map(event=>event.target.value.trim()),
+        filter(query=>query.length>0),
+        switchMap(fetch)
+    )
+}
+
+/**
  * 监听处理请求结果。
  * @param {AJAX Observable} souce$ 请求结果数据流
  */
@@ -41,38 +58,7 @@ function observeResult(souce$){
             const items = responseInfo.response.items
             log(`serach.js observeResult in next, value = ${JSON.stringify(items[0])}`);
             document.querySelector(`#searchResult`).value = JSON.stringify(items[0]);
-        },
-        error => {
-            log(`serach.js observeResult in error, error = ${error}`);
-            document.querySelector(`#searchResult`).value = error
-        },
-        () => {
-            log(`serach.js observeResult in complete, ~~~奇怪，不应该会发生啊~~`);
-            document.querySelector(`#searchResult`).value = "complete~~~奇怪，不应该会发生啊~~"
-        },
-    )
-}
-
-/**
- * 数据处理核心管道方法，将keyup$事件流映射处理成ajax数据流，供下游订阅。
- * @param {Observable} keyup$ 
- * @param {int} duration 
- * @param {Scheduler} scheduler 
- */
-function createSearchPipe(keyup$, duration, scheduler){
-    return keyup$.pipe(
-        debounceTime(duration, scheduler),
-        tap(target=>{
-            log(`serach.js createSearchPipe after debounceTime value = ${target}`);
-        }),
-
-        map(event=>event.target.value.trim()),
-        tap(target=>log(`serach.js createSearchPipe after map value = ${target}`)),
-
-        filter(query=>query.length>0),
-        tap(value=>log(`serach.js createSearchPipe after fileter value = ${value}`)),
-
-        switchMap(fetch)
+        }
     )
 }
 /**
@@ -83,7 +69,7 @@ function createSearchPipe(keyup$, duration, scheduler){
  */
 function startSearch(){
     const keyup$ = createDomEvent$("searchGit", "keyup");
-    const searchResult$ = createSearchPipe(keyup$, 300);
+    const searchResult$ = createSearchPipe(keyup$, fetch, 300);
     observeResult(searchResult$);
 }
 
